@@ -1,0 +1,45 @@
+-- Criar tabela Clientes
+CREATE TABLE clientes (
+  cliente_id SERIAL PRIMARY KEY,
+  nome VARCHAR(255) NOT NULL,
+  endereco VARCHAR(255),
+  telefone VARCHAR(20),
+  email VARCHAR(50)
+);
+
+-- Criar tabela Mesas
+CREATE TABLE mesas (
+  mesa_id SERIAL PRIMARY KEY,
+  numero_mesa INT NOT NULL,
+  capacidade INT NOT NULL,
+  status VARCHAR(20) NOT NULL DEFAULT 'disponivel'
+);
+
+-- Criar tabela Pedidos
+CREATE TABLE pedidos (
+  pedido_id SERIAL PRIMARY KEY,
+  mesa_id INT NOT NULL REFERENCES mesas(mesa_id),
+  cliente_id INT NOT NULL REFERENCES clientes(cliente_id),
+  data_hora_pedido TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  valor_total DECIMAL(10,2) NOT NULL,
+  status VARCHAR(20) NOT NULL DEFAULT 'pendente'
+);
+
+-- Criar tabela Itens_Pedido
+CREATE TABLE itens_pedido (
+  item_pedido_id SERIAL PRIMARY KEY,
+  pedido_id INT NOT NULL REFERENCES pedidos(pedido_id),
+  produto_id INT NOT NULL REFERENCES produtos(produto_id),
+  quantidade INT NOT NULL,
+  valor_unitario DECIMAL(10,2) NOT NULL,
+  valor_total DECIMAL(10,2) NOT NULL
+);
+
+-- Criar tabela Produtos
+CREATE TABLE produtos (
+  produto_id SERIAL PRIMARY KEY,
+  nome VARCHAR(255) NOT NULL,
+  descricao TEXT,
+  categoria VARCHAR(50) NOT NULL,
+  preco DECIMAL(10,2) NOT NULL
+);
